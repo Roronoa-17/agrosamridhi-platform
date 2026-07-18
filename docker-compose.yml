@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  # 1. Global MySQL Database
+  agrosamridhi-db:
+    image: mysql:8.0
+    container_name: agrosamridhi-db
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: agrosamridhi_db
+    volumes:
+      - db_data:/var/lib/mysql
+    # Healthcheck ensures dependent services wait until MySQL is fully ready
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # 2. Global Redis Cache (For Module 8 Dashboard & Rate Limiting)
+  agrosamridhi-cache:
+    image: redis:7-alpine
+    container_name: agrosamridhi-cache
+    restart: always
+    ports:
+      - "6379:6379"
+
+volumes:
+  # Persists database data even if the container is destroyed
+  db_data:
