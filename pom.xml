@@ -1,21 +1,90 @@
-4.0.0
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-    com.agrosamridhi
-    agrosamridhi-parent
-    1.0.0-SNAPSHOT
-    pom
+    <groupId>com.agrosamridhi</groupId>
+    <artifactId>agrosamridhi-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    
+    <!-- Crucial: Tells Maven this is a parent directory, not a jar file -->
+    <packaging>pom</packaging>
 
-    
-        17
-        3.3.4
-        2023.0.3
-    
+    <name>AgroSamridhi Parent Platform</name>
+    <description>Root Maven Project for AgroSamridhi Microservices</description>
 
-    
-    
-        discovery-server
-        api-gateway
-        auth-service
-        data-ingestion-service
-        ai-inference-service
-        dashboard-aggregator-service
+    <properties>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <spring-boot.version>4.1.0</spring-boot.version>
+        <spring-cloud.version>2025.1.2</spring-cloud.version>
+    </properties>
+
+    <!-- Registering all 6 team microservices -->
+    <modules>
+        <module>discovery-server</module>
+        <module>api-gateway</module>
+        <module>auth-service</module>
+        <module>data-ingestion-service</module>
+        <module>ai-inference-service</module>
+        <module>dashboard-aggregator-service</module>
+    </modules>
+
+    <!-- Dependency Management locks in the versions for all child modules -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- Spring Boot Dependencies -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- Spring Cloud Dependencies -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- Global dependencies that EVERY microservice will automatically inherit -->
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot.version}</version>
+                    <configuration>
+                        <excludes>
+                            <exclude>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                            </exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
