@@ -1,0 +1,21 @@
+4.0.0
+
+    com.agrosamridhi
+    agrosamridhi-parent
+    1.0.0-SNAPSHOT
+    pom
+
+    
+        17
+        3.3.4
+        2023.0.3
+    
+
+    
+    
+        discovery-server
+        api-gateway
+        auth-service
+        data-ingestion-service
+        ai-inference-service
+        dashboard-aggregator-service
