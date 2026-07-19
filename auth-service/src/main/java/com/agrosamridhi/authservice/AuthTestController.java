@@ -10,6 +10,6 @@ public class AuthTestController {
 
     @GetMapping("/status")
     public String getStatus() {
-        return "Auth Service is up and running securely through the API Gateway!";
+        return "Auth Service is up and running securely through the API Gateway! This is test controller";
     }
 }
