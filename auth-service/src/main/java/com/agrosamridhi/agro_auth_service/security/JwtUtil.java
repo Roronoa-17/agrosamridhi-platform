@@ -3,6 +3,7 @@ package com.agrosamridhi.agro_auth_service.security;
 import java.security.Key;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -15,8 +16,10 @@ import lombok.extern.slf4j.Slf4j;
 @Component @Slf4j
 public class JwtUtil {
 	
+	@Value("${app.jwt.secret}")
 	private String secret;
 	
+	@Value("${app.jwt.expiration-ms}")
 	private long expirationMs;
 	
 	private Key getKey() {
@@ -58,6 +61,6 @@ public class JwtUtil {
 	public Claims getClaims(String token) {
 		return Jwts.parserBuilder()
 				.setSigningKey(getKey()).build()
-				.parseClaimsJwt(token).getBody();
+				.parseClaimsJws(token).getBody();
 	}
 }
