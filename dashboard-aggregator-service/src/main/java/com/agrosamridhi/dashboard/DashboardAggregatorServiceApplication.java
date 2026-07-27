@@ -16,8 +16,14 @@ public class DashboardAggregatorServiceApplication {
     }
 
     @Bean
+
+
+
+
     @LoadBalanced
     public WebClient.Builder loadBalancedWebClientBuilder() {
+
+        
         return WebClient.builder();
     }
 }
