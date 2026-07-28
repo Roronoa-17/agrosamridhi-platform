@@ -1,0 +1,30 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: dashboard-aggregator-service
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 2000ms
+  cache:
+    type: redis
+
+# Eureka Discovery Server Configuration
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+# OpenFeign Timeout Configuration (<500ms SLA protection)
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: 100
+            readTimeout: 300	
