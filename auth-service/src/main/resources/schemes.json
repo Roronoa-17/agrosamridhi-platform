@@ -1,0 +1,542 @@
+[
+  {
+    "schemeId": "PM-KISAN-001",
+    "name": "PM-KISAN (Pradhan Mantri Kisan Samman Nidhi)",
+    "benefit": "₹6,000 per year direct income support in 3 installments of ₹2,000 each",
+    "ministry": "Ministry of Agriculture and Farmers' Welfare",
+    "description": "Provides direct income support to all landholding farmer families across India to supplement their financial needs for procuring inputs and other needs related to agriculture.",
+    "criteria": {
+      "maxLandAcres": 99999,
+      "minIncome": 0,
+      "maxIncome": 99999999,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": [],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "Land Records (Khatoni/Khatauni)", "Bank Passbook", "Mobile Number linked with Aadhaar"],
+    "applyLink": "https://pmkisan.gov.in"
+  },
+  {
+    "schemeId": "PMFBY-002",
+    "name": "Pradhan Mantri Fasal Bima Yojana (PMFBY)",
+    "benefit": "Crop insurance covering up to full sum insured. Premium: 2% for Kharif, 1.5% for Rabi, 5% for Horticulture",
+    "ministry": "Ministry of Agriculture and Farmers' Welfare",
+    "description": "Comprehensive crop insurance scheme providing financial support to farmers suffering crop loss due to natural calamities, pests and diseases. The government pays the balance premium.",
+    "criteria": {
+      "maxLandAcres": 99999,
+      "minIncome": 0,
+      "maxIncome": 99999999,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": [],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "Land Records", "Bank Account", "Sowing Certificate", "Mobile Number"],
+    "applyLink": "https://pmfby.gov.in"
+  },
+  {
+    "schemeId": "KCC-003",
+    "name": "Kisan Credit Card (KCC)",
+    "benefit": "Short-term credit up to ₹3 lakh at 4% interest (after government interest subvention). Working capital for agriculture, fisheries, and animal husbandry.",
+    "ministry": "Ministry of Agriculture and Farmers' Welfare / RBI",
+    "description": "Provides timely and adequate credit support to farmers for their cultivation needs, post-harvest expenses, maintenance of farm assets, allied activities, and consumption requirements.",
+    "criteria": {
+      "maxLandAcres": 99999,
+      "minIncome": 0,
+      "maxIncome": 99999999,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": [],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "PAN Card", "Land Records", "Bank Account", "Passport Photo", "Caste Certificate if applicable"],
+    "applyLink": "https://www.nabard.org/content.aspx?id=578"
+  },
+  {
+    "schemeId": "SHC-004",
+    "name": "Soil Health Card Scheme",
+    "benefit": "Free soil testing and health card every 2 years. Guidance on correct fertilizer usage to reduce input costs by 8-10%.",
+    "ministry": "Ministry of Agriculture and Farmers' Welfare",
+    "description": "Provides every farmer a Soil Health Card with information on soil nutrient status and fertilizer recommendations for 12 nutrients, helping optimize fertilizer use.",
+    "criteria": {
+      "maxLandAcres": 99999,
+      "minIncome": 0,
+      "maxIncome": 99999999,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": [],
+      "requiresBankAccount": false,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "Land Records", "Mobile Number"],
+    "applyLink": "https://soilhealth.dac.gov.in"
+  },
+  {
+    "schemeId": "PMKSY-005",
+    "name": "PM Krishi Sinchayee Yojana (PMKSY) – Per Drop More Crop",
+    "benefit": "55% subsidy for small/marginal farmers and 45% for other farmers on drip and sprinkler irrigation equipment.",
+    "ministry": "Ministry of Jal Shakti / Ministry of Agriculture",
+    "description": "Aims to expand irrigation coverage and improve water use efficiency through drip and sprinkler systems under the motto 'Har Khet Ko Pani, More Crop Per Drop'.",
+    "criteria": {
+      "maxLandAcres": 99999,
+      "minIncome": 0,
+      "maxIncome": 250000,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": [],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "Land Records", "Bank Passbook", "Quotation from approved vendor", "Caste Certificate"],
+    "applyLink": "https://pmksy.gov.in"
+  },
+  {
+    "schemeId": "RKVY-006",
+    "name": "Rashtriya Krishi Vikas Yojana (RKVY-RAFTAAR)",
+    "benefit": "Grants and loans for agriculture infrastructure, food processing, and agri-startups. Seed capital up to ₹25 lakh for agri-entrepreneurs.",
+    "ministry": "Ministry of Agriculture and Farmers' Welfare",
+    "description": "Holistic development of agriculture and allied sectors to ensure remunerative returns to farmers through development of infrastructure and promotion of agri-entrepreneurship.",
+    "criteria": {
+      "maxLandAcres": 99999,
+      "minIncome": 0,
+      "maxIncome": 99999999,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": [],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "Land Records", "Business Plan", "Bank Account", "Project Report"],
+    "applyLink": "https://rkvy.nic.in"
+  },
+  {
+    "schemeId": "MIDH-007",
+    "name": "Mission for Integrated Development of Horticulture (MIDH)",
+    "benefit": "Subsidy 40-50% for establishing orchards, 50% for cold chain, 50% for post-harvest management. Maximum assistance ₹12,000-50,000 per hectare depending on crop.",
+    "ministry": "Ministry of Agriculture and Farmers' Welfare",
+    "description": "Promotes holistic growth of horticulture sector including fruits, vegetables, root and tuber crops, mushrooms, spices, flowers, aromatics, coconut, cashew, and bamboo.",
+    "criteria": {
+      "maxLandAcres": 99999,
+      "minIncome": 0,
+      "maxIncome": 99999999,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": [],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "Land Records", "Bank Passbook", "Horticulture crop plan", "Passport Photo"],
+    "applyLink": "https://midh.gov.in"
+  },
+  {
+    "schemeId": "NFSM-008",
+    "name": "National Food Security Mission (NFSM)",
+    "benefit": "Subsidized certified seeds, micronutrients, soil amendments, farm machinery, and training. Up to 50% subsidy on inputs.",
+    "ministry": "Ministry of Agriculture and Farmers' Welfare",
+    "description": "Aims to increase production of rice, wheat, pulses, coarse cereals, and commercial crops to ensure food security through area expansion and productivity enhancement.",
+    "criteria": {
+      "maxLandAcres": 99999,
+      "minIncome": 0,
+      "maxIncome": 200000,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": [],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "Land Records", "Bank Passbook", "Mobile Number"],
+    "applyLink": "https://nfsm.gov.in"
+  },
+  {
+    "schemeId": "ENAM-009",
+    "name": "e-NAM (National Agriculture Market) Registration",
+    "benefit": "Access to pan-India online trading platform for better price discovery. Direct sale without middlemen. Free registration.",
+    "ministry": "Ministry of Agriculture and Farmers' Welfare",
+    "description": "A pan-India electronic trading portal networking existing APMC mandis to create a unified national market for agricultural commodities, providing better price discovery.",
+    "criteria": {
+      "maxLandAcres": 99999,
+      "minIncome": 0,
+      "maxIncome": 99999999,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": [],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "Bank Account", "Mobile Number", "Passport Photo"],
+    "applyLink": "https://enam.gov.in"
+  },
+  {
+    "schemeId": "KMDY-010",
+    "name": "PM Kisan Maan Dhan Yojana",
+    "benefit": "Guaranteed pension of ₹3,000 per month after age 60. Government contributes equal amount to farmer's contribution of ₹55-200/month based on age.",
+    "ministry": "Ministry of Agriculture and Farmers' Welfare",
+    "description": "Voluntary and contributory pension scheme for small and marginal farmers aged 18-40 years. Ensures financial security to farmers in their old age.",
+    "criteria": {
+      "maxLandAcres": 5,
+      "minIncome": 0,
+      "maxIncome": 99999999,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": [],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "Bank Passbook / IFSC", "Land Records showing small/marginal status"],
+    "applyLink": "https://maandhan.in/shramyogi"
+  },
+  {
+    "schemeId": "SMAM-011",
+    "name": "Sub-Mission on Agricultural Mechanization (SMAM)",
+    "benefit": "40-50% subsidy (up to ₹1.2 lakh) on agricultural machinery including tractors, power tillers, harvesters, seed drills, and sprayers for small/marginal farmers.",
+    "ministry": "Ministry of Agriculture and Farmers' Welfare",
+    "description": "Promotes farm mechanization by making agricultural equipment affordable for small and marginal farmers through subsidies and establishing Custom Hiring Centres (CHC).",
+    "criteria": {
+      "maxLandAcres": 10,
+      "minIncome": 0,
+      "maxIncome": 250000,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": [],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "Land Records", "Bank Account", "Caste Certificate", "Income Certificate"],
+    "applyLink": "https://agrimachinery.nic.in"
+  },
+  {
+    "schemeId": "PKVY-012",
+    "name": "Paramparagat Krishi Vikas Yojana (PKVY) – Organic Farming",
+    "benefit": "₹50,000 per hectare over 3 years for cluster-based organic farming. Includes certification costs, inputs, and market linkage support.",
+    "ministry": "Ministry of Agriculture and Farmers' Welfare",
+    "description": "Promotes organic farming through adoption of organic village clusters. Provides financial assistance for organic inputs, certification, and market development.",
+    "criteria": {
+      "maxLandAcres": 99999,
+      "minIncome": 0,
+      "maxIncome": 99999999,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": [],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "Land Records", "Bank Passbook", "Willingness certificate for organic farming"],
+    "applyLink": "https://pgsindia-ncof.gov.in"
+  },
+  {
+    "schemeId": "NCU-013",
+    "name": "Neem Coated Urea Scheme",
+    "benefit": "100% of urea is neem coated at subsidized rates. Reduces urea consumption by 7-10%, increases soil fertility, and reduces pest/disease incidence.",
+    "ministry": "Ministry of Chemicals and Fertilizers",
+    "description": "All domestically manufactured urea is mandatorily neem-coated to slow release of nitrogen, improve nitrogen use efficiency, and reduce diversion of urea for non-agricultural use.",
+    "criteria": {
+      "maxLandAcres": 99999,
+      "minIncome": 0,
+      "maxIncome": 99999999,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": [],
+      "requiresBankAccount": false,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card (for mera PMKISAN verification)"],
+    "applyLink": "https://www.iffco.in"
+  },
+  {
+    "schemeId": "DBT-014",
+    "name": "Direct Benefit Transfer for Fertilizer Subsidy",
+    "benefit": "Fertilizer subsidy of ₹500-5,000+ per bag transferred directly. No black market diversion. Real-time tracking.",
+    "ministry": "Ministry of Chemicals and Fertilizers",
+    "description": "Point-of-sale devices at fertilizer shops authenticate purchases via Aadhaar, ensuring fertilizer subsidy reaches actual farmers without leakage.",
+    "criteria": {
+      "maxLandAcres": 99999,
+      "minIncome": 0,
+      "maxIncome": 99999999,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": [],
+      "requiresBankAccount": false,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "Mobile Number linked with Aadhaar"],
+    "applyLink": "https://www.dbtfert.nic.in"
+  },
+  {
+    "schemeId": "AIF-015",
+    "name": "Agriculture Infrastructure Fund (AIF)",
+    "benefit": "Loans up to ₹2 crore at 3% interest subsidy for 7 years. For post-harvest management, cold chains, warehouses, and primary processing units.",
+    "ministry": "Ministry of Agriculture and Farmers' Welfare",
+    "description": "₹1 lakh crore financing facility for investment in post-harvest management infrastructure and community farming assets through interest subvention and financial support.",
+    "criteria": {
+      "maxLandAcres": 99999,
+      "minIncome": 0,
+      "maxIncome": 99999999,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": [],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "Business Plan / DPR", "Land Documents", "Bank Account", "GST Registration (if applicable)"],
+    "applyLink": "https://agriinfra.dac.gov.in"
+  },
+  {
+    "schemeId": "MH-MAGA-016",
+    "name": "Magel Tyala Shet Tale (Maharashtra) – Farm Pond Scheme",
+    "benefit": "100% subsidy on farm pond construction (5m×4m×3m) plus plastic lining. Value up to ₹75,000 per beneficiary.",
+    "ministry": "Government of Maharashtra – Agriculture Department",
+    "description": "Provides farm ponds to every farmer who applies in Maharashtra to store rainwater for supplemental irrigation. Especially beneficial for drought-prone Vidarbha and Marathwada regions.",
+    "criteria": {
+      "maxLandAcres": 99999,
+      "minIncome": 0,
+      "maxIncome": 99999999,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": ["Maharashtra"],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "7/12 Utara (Land Record)", "Bank Passbook", "Satbara (7/12 Extract)", "Caste Certificate"],
+    "applyLink": "https://aaplesarkar.mahaonline.gov.in"
+  },
+  {
+    "schemeId": "MH-NMMS-017",
+    "name": "Nanaji Deshmukh Krishi Sanjivani Project (Maharashtra)",
+    "benefit": "₹4,000 crore World Bank aided project. Financial support for climate-resilient agriculture, water management, and soil health. Per-farm support up to ₹2 lakh.",
+    "ministry": "Government of Maharashtra",
+    "description": "Transforming rain-fed agricultural areas in Maharashtra into climate-resilient zones. Focuses on sustainable agriculture practices, soil health, and water conservation.",
+    "criteria": {
+      "maxLandAcres": 99999,
+      "minIncome": 0,
+      "maxIncome": 200000,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": ["Maharashtra"],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "7/12 Utara", "Bank Passbook", "Income Certificate"],
+    "applyLink": "https://www.krishi.maharashtra.gov.in"
+  },
+  {
+    "schemeId": "UP-KIMI-018",
+    "name": "UP Kisan Mitra Urja Yojana (Uttar Pradesh)",
+    "benefit": "Free electricity up to 1000 units per month for agricultural connections. Annual power subsidy benefit of ₹12,000 per farmer.",
+    "ministry": "Government of Uttar Pradesh",
+    "description": "Provides free electricity to farm pump connections in Uttar Pradesh to reduce irrigation costs for small and marginal farmers.",
+    "criteria": {
+      "maxLandAcres": 5,
+      "minIncome": 0,
+      "maxIncome": 200000,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": ["Uttar Pradesh"],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "Khatauni (Land Record)", "Electricity Meter Number", "Bank Passbook"],
+    "applyLink": "https://upagriculture.com"
+  },
+  {
+    "schemeId": "UP-PMKSY-019",
+    "name": "UP Sinchai Pump Subsidy (Uttar Pradesh)",
+    "benefit": "90% subsidy on submersible/electric pump sets for SC/ST farmers, 50% for others. Maximum benefit ₹10,000.",
+    "ministry": "Government of Uttar Pradesh – Minor Irrigation",
+    "description": "Provides subsidized pump sets for irrigation to small and marginal farmers in Uttar Pradesh to increase the area under assured irrigation.",
+    "criteria": {
+      "maxLandAcres": 5,
+      "minIncome": 0,
+      "maxIncome": 200000,
+      "allowedCaste": ["SC", "ST", "OBC"],
+      "allowedStates": ["Uttar Pradesh"],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "Khatauni", "Caste Certificate", "Income Certificate", "Bank Passbook"],
+    "applyLink": "https://minorirrigation.up.gov.in"
+  },
+  {
+    "schemeId": "PB-APHC-020",
+    "name": "Punjab Agriculture Pump Set Scheme",
+    "benefit": "Free 7.5 HP submersible pump set for SC farmers. 50% subsidy for other farmers. Saves ₹25,000-60,000 in pump costs.",
+    "ministry": "Government of Punjab – Agriculture Department",
+    "description": "Provides subsidized/free pump sets to farmers for efficient irrigation. Special focus on uplifting SC farming families.",
+    "criteria": {
+      "maxLandAcres": 7.5,
+      "minIncome": 0,
+      "maxIncome": 180000,
+      "allowedCaste": ["SC"],
+      "allowedStates": ["Punjab"],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "SC Certificate", "Land Records (Jamabandi)", "Bank Passbook", "Income Certificate"],
+    "applyLink": "https://agripb.gov.in"
+  },
+  {
+    "schemeId": "PB-STRAW-021",
+    "name": "Punjab Crop Residue Management Scheme",
+    "benefit": "₹2,500 per acre incentive for in-situ crop residue management (not burning). Equipment subsidy 50-80% for Happy Seeder, Super SMS, Rotavator.",
+    "ministry": "Government of Punjab",
+    "description": "Promotes crop residue management to stop paddy straw burning, reduce air pollution, and improve soil organic carbon in Punjab.",
+    "criteria": {
+      "maxLandAcres": 99999,
+      "minIncome": 0,
+      "maxIncome": 99999999,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": ["Punjab"],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "Jamabandi (Land Records)", "Bank Passbook", "Mobile Number"],
+    "applyLink": "https://agripb.gov.in"
+  },
+  {
+    "schemeId": "KA-RYSS-022",
+    "name": "Rajiv Gandhi Hasirudhama Scheme (Karnataka) – Vermicompost",
+    "benefit": "75% subsidy for establishing vermicompost units (up to ₹15,000). Support for organic certification under PGS India.",
+    "ministry": "Government of Karnataka – Horticulture Department",
+    "description": "Promotes organic farming through vermicomposting, bio-fertilizers, and natural pest management in Karnataka to reduce chemical input costs.",
+    "criteria": {
+      "maxLandAcres": 5,
+      "minIncome": 0,
+      "maxIncome": 150000,
+      "allowedCaste": ["OBC", "SC", "ST"],
+      "allowedStates": ["Karnataka"],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "RTC (Land Records)", "Caste Certificate", "Bank Passbook", "Income Certificate"],
+    "applyLink": "https://horticulture.karnataka.gov.in"
+  },
+  {
+    "schemeId": "KA-PMKSY-023",
+    "name": "Karnataka Drip Irrigation Scheme (Under PMKSY)",
+    "benefit": "90% subsidy for SC/ST small/marginal farmers, 75% for others, on drip and sprinkler irrigation. Maximum ₹1.25 lakh per hectare.",
+    "ministry": "Government of Karnataka – Agriculture Department",
+    "description": "Karnataka's implementation of PMKSY with enhanced subsidies. Rapid adoption of micro-irrigation across all agro-climatic zones in Karnataka.",
+    "criteria": {
+      "maxLandAcres": 10,
+      "minIncome": 0,
+      "maxIncome": 250000,
+      "allowedCaste": ["SC", "ST"],
+      "allowedStates": ["Karnataka"],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "RTC", "Caste Certificate", "Bank Account", "Farmer Registration Certificate"],
+    "applyLink": "https://raitamitra.kar.nic.in"
+  },
+  {
+    "schemeId": "MP-BDVP-024",
+    "name": "Mukhyamantri Krishak Jeevan Kalyan Yojana (Madhya Pradesh)",
+    "benefit": "₹4 lakh compensation on accidental death, ₹2 lakh for permanent disability, ₹25,000 for daughter's marriage. Zero premium for farmers.",
+    "ministry": "Government of Madhya Pradesh",
+    "description": "Comprehensive insurance and social security scheme for registered farmers in Madhya Pradesh providing financial protection against accidents, disability, and family events.",
+    "criteria": {
+      "maxLandAcres": 99999,
+      "minIncome": 0,
+      "maxIncome": 99999999,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": ["Madhya Pradesh"],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "Land Records", "Bank Passbook", "Farmer Registration Number", "Mobile Number"],
+    "applyLink": "https://mpkrishi.mp.gov.in"
+  },
+  {
+    "schemeId": "MP-SEED-025",
+    "name": "MP Beej Gram Yojana (Madhya Pradesh Seed Village)",
+    "benefit": "50-100% subsidy on certified seeds of wheat, rice, maize, soybean, and pulses. Villages designated as seed production centers get premium prices.",
+    "ministry": "Government of Madhya Pradesh – Agriculture Department",
+    "description": "Promotes production of quality certified seeds at village level in Madhya Pradesh, improving seed replacement rate and ensuring availability of quality planting material.",
+    "criteria": {
+      "maxLandAcres": 5,
+      "minIncome": 0,
+      "maxIncome": 150000,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": ["Madhya Pradesh"],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "Khasra/Khatoni (Land Records)", "Bank Passbook", "Farmer ID Card"],
+    "applyLink": "https://mpkrishi.mp.gov.in"
+  },
+  {
+    "schemeId": "ATMA-026",
+    "name": "Agricultural Technology Management Agency (ATMA)",
+    "benefit": "Free training, demonstrations, farmer field schools, and exposure visits. Technology adoption support up to ₹10,000 per farmer per year.",
+    "ministry": "Ministry of Agriculture and Farmers' Welfare",
+    "description": "Bottom-up participatory approach for agricultural extension. Provides training, demonstrations, and technology dissemination through Farmer Interest Groups (FIGs) and FPOs.",
+    "criteria": {
+      "maxLandAcres": 99999,
+      "minIncome": 0,
+      "maxIncome": 99999999,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": [],
+      "requiresBankAccount": false,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "Mobile Number"],
+    "applyLink": "https://agricoop.nic.in/en/atma"
+  },
+  {
+    "schemeId": "WDRA-027",
+    "name": "Negotiable Warehouse Receipt (NWR) System – WDRA",
+    "benefit": "Pledge loans against warehouse receipts at 70-80% of commodity value. Avoids distress sale. 6% interest loan from banks.",
+    "ministry": "Ministry of Consumer Affairs / WDRA",
+    "description": "Allows farmers to store produce in registered warehouses and obtain loans against warehouse receipts, avoiding distress sales at harvest when prices are low.",
+    "criteria": {
+      "maxLandAcres": 99999,
+      "minIncome": 0,
+      "maxIncome": 99999999,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": [],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "Bank Account", "Produce quality certificate", "KCC or crop loan documents"],
+    "applyLink": "https://wdra.gov.in"
+  },
+  {
+    "schemeId": "FPO-028",
+    "name": "Formation and Promotion of 10,000 FPOs",
+    "benefit": "₹15 lakh grant per FPO over 5 years. Management cost support, equity grant up to ₹15 lakh, credit guarantee up to ₹2 crore.",
+    "ministry": "Ministry of Agriculture and Farmers' Welfare",
+    "description": "Promotes Farmer Producer Organisations (FPOs) to aggregate small farmers, achieve economies of scale in input procurement, processing, value addition, and marketing.",
+    "criteria": {
+      "maxLandAcres": 5,
+      "minIncome": 0,
+      "maxIncome": 250000,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": [],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "Land Records", "Group formation details", "Bank Account (group)", "Business Plan"],
+    "applyLink": "https://sfacindia.com"
+  },
+  {
+    "schemeId": "PMJJBY-029",
+    "name": "PM Jeevan Jyoti Bima Yojana for Farmers",
+    "benefit": "₹2 lakh life insurance at just ₹436/year premium. Auto-renews. Covers death from any cause.",
+    "ministry": "Ministry of Finance / Insurance Regulatory Authority",
+    "description": "Life insurance scheme providing ₹2 lakh cover to farmers and all citizens aged 18-50 years at extremely affordable premium, protecting farm families against loss of breadwinner.",
+    "criteria": {
+      "maxLandAcres": 99999,
+      "minIncome": 0,
+      "maxIncome": 99999999,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": [],
+      "requiresBankAccount": true,
+      "requiresAadhaar": false
+    },
+    "documents": ["Bank Passbook", "Mobile Number", "Age proof"],
+    "applyLink": "https://jansuraksha.gov.in"
+  },
+  {
+    "schemeId": "SOLAR-030",
+    "name": "PM-KUSUM (Kisan Urja Suraksha evam Utthaan Mahabhiyan)",
+    "benefit": "90% subsidy on solar pump installation (₹3 lakh+ pump at ₹0.30-0.50 lakh for farmer). Option to sell surplus solar power to grid at ₹3.14/unit.",
+    "ministry": "Ministry of New and Renewable Energy",
+    "description": "Provides solar-powered pump sets to reduce dependence on diesel/grid power, lower irrigation costs by 80-90%, and generate additional income through grid-connected solar plants.",
+    "criteria": {
+      "maxLandAcres": 99999,
+      "minIncome": 0,
+      "maxIncome": 300000,
+      "allowedCaste": ["GEN", "OBC", "SC", "ST"],
+      "allowedStates": [],
+      "requiresBankAccount": true,
+      "requiresAadhaar": true
+    },
+    "documents": ["Aadhaar Card", "Land Records", "Bank Passbook", "Existing electricity bill (if grid connected)", "Mobile Number"],
+    "applyLink": "https://pmkusum.mnre.gov.in"
+  }
+]
