@@ -1,7 +1,9 @@
 package com.agrosamridhi.dataingestion.service.impl;
 
+import java.util.Optional;
 import com.agrosamridhi.dataingestion.dto.AgmarknetRecord;
 import com.agrosamridhi.dataingestion.dto.AgmarknetResponse;
+import com.agrosamridhi.dataingestion.dto.MandiTrendResponse;
 import com.agrosamridhi.dataingestion.entity.MandiPrice;
 import com.agrosamridhi.dataingestion.repository.MandiRepository;
 import com.agrosamridhi.dataingestion.service.MandiService;
@@ -33,24 +35,39 @@ public class MandiServiceImpl implements MandiService {
     }
 
     @Override
-    public void fetchAndSaveMandiPrices() {
+public void fetchAndSaveMandiPrices() {
 
-        AgmarknetResponse response = webClientBuilder.build()
-                .get()
-                .uri(agmarknetBaseUrl +
-                        "?api-key=" + apiKey +
-                        "&format=json" +
-                        "&limit=100")
-                .retrieve()
-                .bodyToMono(AgmarknetResponse.class)
-                .block();
+    AgmarknetResponse response = webClientBuilder.build()
+            .get()
+            .uri(agmarknetBaseUrl +
+                    "?api-key=" + apiKey +
+                    "&format=json" +
+                    "&limit=100")
+            .retrieve()
+            .bodyToMono(AgmarknetResponse.class)
+            .block();
 
-        if (response != null && response.getRecords() != null) {
+    if (response != null && response.getRecords() != null) {
 
-            DateTimeFormatter formatter =
-                    DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-            for (AgmarknetRecord record : response.getRecords()) {
+        int inserted = 0;
+        int skipped = 0;
+
+        for (AgmarknetRecord record : response.getRecords()) {
+
+            LocalDate arrivalDate =
+                    LocalDate.parse(record.getArrivalDate(), formatter);
+
+           List<MandiPrice> existingRecords =
+        mandiRepository.findByCropNameAndMandiNameAndArrivalDate(
+                record.getCommodity(),
+                record.getMarket(),
+                arrivalDate
+        );
+
+if (existingRecords.isEmpty()) {
 
                 MandiPrice mandiPrice = new MandiPrice();
 
@@ -63,25 +80,48 @@ public class MandiServiceImpl implements MandiService {
                 mandiPrice.setMaxPrice(record.getMaxPrice());
                 mandiPrice.setModalPrice(record.getModalPrice());
 
-                mandiPrice.setArrivalDate(
-                        LocalDate.parse(record.getArrivalDate(), formatter));
-
+                mandiPrice.setArrivalDate(arrivalDate);
                 mandiPrice.setCreatedAt(LocalDateTime.now());
 
                 mandiRepository.save(mandiPrice);
-            }
+                inserted++;
 
-            System.out.println("Mandi prices fetched successfully.");
+            } else {
+
+                skipped++;
+
+            }
         }
+
+        System.out.println("Inserted: " + inserted +
+                " | Skipped duplicates: " + skipped);
     }
+}
 
     @Override
     public List<MandiPrice> getAllMandiPrices() {
         return mandiRepository.findAll();
     }
 
-    @Override
-    public String getPriceTrend(String cropName) {
-        return "90-day trend will be calculated here.";
+  @Override
+public MandiTrendResponse getPriceTrend(String cropName) {
+
+    List<Object[]> result = mandiRepository.getPriceTrend(cropName);
+
+    if (result.isEmpty()) {
+        return null;
     }
+
+    Object[] row = result.get(0);
+
+    MandiTrendResponse response = new MandiTrendResponse();
+
+    response.setCropName((String) row[0]);
+    response.setAveragePrice(((Number) row[1]).doubleValue());
+    response.setMinimumPrice(((Number) row[2]).doubleValue());
+    response.setMaximumPrice(((Number) row[3]).doubleValue());
+    response.setTotalRecords(((Number) row[4]).longValue());
+
+    return response;
+}
 }

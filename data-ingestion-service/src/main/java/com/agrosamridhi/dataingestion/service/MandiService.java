@@ -1,5 +1,8 @@
 package com.agrosamridhi.dataingestion.service;
+
+import com.agrosamridhi.dataingestion.dto.MandiTrendResponse;
 import com.agrosamridhi.dataingestion.entity.MandiPrice;
+
 import java.util.List;
 
 public interface MandiService {
@@ -8,5 +11,5 @@ public interface MandiService {
 
     List<MandiPrice> getAllMandiPrices();
 
-    String getPriceTrend(String cropName);
+    MandiTrendResponse getPriceTrend(String cropName);
 }

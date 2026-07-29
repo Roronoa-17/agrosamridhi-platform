@@ -1,6 +1,7 @@
 
 package com.agrosamridhi.dataingestion.controller;
 
+import com.agrosamridhi.dataingestion.dto.MandiTrendResponse;
 import com.agrosamridhi.dataingestion.entity.MandiPrice;
 import com.agrosamridhi.dataingestion.service.MandiService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ public String fetchMandiPrices() {
 }
 
 
-    @GetMapping("/trends")
-    public String getPriceTrend(@RequestParam("cropName") String cropName) {
-        return mandiService.getPriceTrend(cropName);
-    }
+@GetMapping("/trends")
+public MandiTrendResponse getPriceTrend(@RequestParam("cropName") String cropName) {
+    return mandiService.getPriceTrend(cropName);
+}
 }
