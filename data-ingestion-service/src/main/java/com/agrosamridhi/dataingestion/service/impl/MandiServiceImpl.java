@@ -103,25 +103,36 @@ if (existingRecords.isEmpty()) {
         return mandiRepository.findAll();
     }
 
-  @Override
-public MandiTrendResponse getPriceTrend(String cropName) {
+    @Override
+    public MandiTrendResponse getPriceTrend(String cropName) {
+        List<MandiPrice> records = mandiRepository.findByCropNameContainingIgnoreCase(cropName);
 
-    List<Object[]> result = mandiRepository.getPriceTrend(cropName);
+        if (records.isEmpty()) {
+            return null;
+        }
 
-    if (result.isEmpty()) {
-        return null;
+        double averagePrice = records.stream()
+                .mapToDouble(record -> record.getModalPrice() != null ? record.getModalPrice() : 0.0)
+                .average()
+                .orElse(0.0);
+
+        double minimumPrice = records.stream()
+                .mapToDouble(record -> record.getMinPrice() != null ? record.getMinPrice() : 0.0)
+                .min()
+                .orElse(0.0);
+
+        double maximumPrice = records.stream()
+                .mapToDouble(record -> record.getMaxPrice() != null ? record.getMaxPrice() : 0.0)
+                .max()
+                .orElse(0.0);
+
+        MandiTrendResponse response = new MandiTrendResponse();
+        response.setCropName(cropName);
+        response.setAveragePrice(averagePrice);
+        response.setMinimumPrice(minimumPrice);
+        response.setMaximumPrice(maximumPrice);
+        response.setTotalRecords((long) records.size());
+
+        return response;
     }
-
-    Object[] row = result.get(0);
-
-    MandiTrendResponse response = new MandiTrendResponse();
-
-    response.setCropName((String) row[0]);
-    response.setAveragePrice(((Number) row[1]).doubleValue());
-    response.setMinimumPrice(((Number) row[2]).doubleValue());
-    response.setMaximumPrice(((Number) row[3]).doubleValue());
-    response.setTotalRecords(((Number) row[4]).longValue());
-
-    return response;
-}
 }

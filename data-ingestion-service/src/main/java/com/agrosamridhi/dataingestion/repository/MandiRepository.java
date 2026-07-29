@@ -12,13 +12,11 @@ import java.util.List;
 @Repository
 public interface MandiRepository extends JpaRepository<MandiPrice, Long> {
 
-    @Query(value = "CALL GetPriceTrend90Days(:cropName)", nativeQuery = true)
-    List<Object[]> getPriceTrend(@Param("cropName") String cropName);
+    List<MandiPrice> findByCropNameContainingIgnoreCase(String cropName);
 
-
-List<MandiPrice> findByCropNameAndMandiNameAndArrivalDate(
-        String cropName,
-        String mandiName,
-        LocalDate arrivalDate
-);
+    List<MandiPrice> findByCropNameAndMandiNameAndArrivalDate(
+            String cropName,
+            String mandiName,
+            LocalDate arrivalDate
+    );
 }
