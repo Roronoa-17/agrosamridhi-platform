@@ -28,7 +28,7 @@ public String fetchMandiPrices() {
 
 
     @GetMapping("/trends")
-    public String getPriceTrend(@RequestParam String cropName) {
+    public String getPriceTrend(@RequestParam("cropName") String cropName) {
         return mandiService.getPriceTrend(cropName);
     }
 }

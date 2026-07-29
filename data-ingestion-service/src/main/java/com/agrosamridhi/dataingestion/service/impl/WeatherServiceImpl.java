@@ -76,7 +76,29 @@ public void fetchAndSaveWeatherData() {
 
     @Override
     public String generateWeatherAdvisory(String district) {
+        // 1. Fetch the data from the database securely
+        List<WeatherData> weatherList = weatherRepository.findByDistrict(district);
+        
+        if (weatherList == null || weatherList.isEmpty()) {
+            return "No weather data found for " + district + ". Please run the /fetch endpoint first.";
+        }
 
-        return "Weather advisory will be generated here.";
+        // 2. Get the most recent data entry
+        WeatherData currentData = weatherList.get(0);
+        
+        // 3. Generate the advisory
+        StringBuilder advisory = new StringBuilder();
+        advisory.append("Advisory for ").append(district).append(":\n");
+        advisory.append("Current Temp: ").append(currentData.getTemperature()).append("°C.\n");
+        
+        if (currentData.getTemperature() != null && currentData.getTemperature() > 35.0) {
+            advisory.append("WARNING: High heat detected. Increase irrigation frequency to prevent crop stress.");
+        } else if (currentData.getRainfall() != null && currentData.getRainfall() > 10.0) {
+            advisory.append("ALERT: Heavy rainfall expected. Ensure proper field drainage and delay pesticide spraying.");
+        } else {
+            advisory.append("Conditions are optimal. Continue standard farming schedules.");
+        }
+        
+        return advisory.toString();
     }
 }

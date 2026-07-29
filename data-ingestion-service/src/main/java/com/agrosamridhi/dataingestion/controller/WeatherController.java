@@ -1,5 +1,3 @@
-
-
 package com.agrosamridhi.dataingestion.controller;
 
 import com.agrosamridhi.dataingestion.entity.WeatherData;
@@ -16,13 +14,20 @@ public class WeatherController {
     @Autowired
     private WeatherService weatherService;
 
+    // this triggers to fetch and save data
+    @PostMapping("/fetch")
+    public String fetchWeatherData() {
+        weatherService.fetchAndSaveWeatherData();
+        return "Weather data successfully fetched and saved to MySQL.";
+    }
+
     @GetMapping("/all")
     public List<WeatherData> getAllWeatherData() {
         return weatherService.getAllWeatherData();
     }
 
     @GetMapping("/advisory")
-    public String getWeatherAdvisory(@RequestParam String district) {
+    public String getWeatherAdvisory(@RequestParam("district") String district) {
         return weatherService.generateWeatherAdvisory(district);
     }
 }
