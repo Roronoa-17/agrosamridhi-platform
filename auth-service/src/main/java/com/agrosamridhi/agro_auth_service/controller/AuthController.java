@@ -42,9 +42,10 @@ public class AuthController {
 	@PostMapping("/login")
 	public ResponseEntity<AuthResponse> login(
 			@RequestBody LoginRequest req){
-		log.info("Login request received: email{}",req.getEmail());
-		
-		return ResponseEntity.ok(authService.login(req));
+		log.info("Login request received: email={}", req.getEmail());
+		AuthResponse response = authService.login(req);
+		log.info("Login response body: {}", response);
+		return ResponseEntity.ok(response);
 	}
 	
 	@GetMapping("/profile")

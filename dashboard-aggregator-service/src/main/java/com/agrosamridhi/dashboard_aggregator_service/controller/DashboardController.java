@@ -13,9 +13,6 @@ public class DashboardController {
 
     private final DashboardAggregatorService dashboardService;
     
-    public DashboardController(DashboardAggregatorService dashboardService) {
-    	this.dashboardService = dashboardService;
-    }
     @GetMapping("/{farmerId}")
     public ResponseEntity<UnifiedDashboardResponse> getDashboard(@PathVariable String farmerId) {
         return ResponseEntity.ok(dashboardService.getAggregatedDashboard(farmerId));

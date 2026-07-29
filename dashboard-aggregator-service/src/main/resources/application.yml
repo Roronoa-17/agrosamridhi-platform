@@ -1,5 +1,5 @@
 server:
-  port: 8085
+  port: 8090
 
 spring:
   application:
@@ -11,6 +11,14 @@ spring:
       timeout: 2000ms
   cache:
     type: redis
+  # OpenFeign Configuration MUST be nested under 'spring:'
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: 100
+            readTimeout: 300 
 
 # Eureka Discovery Server Configuration
 eureka:
@@ -19,12 +27,3 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
   instance:
     prefer-ip-address: true
-
-# OpenFeign Timeout Configuration (<500ms SLA protection)
-  cloud:
-    openfeign:
-      client:
-        config:
-          default:
-            connectTimeout: 100
-            readTimeout: 300	

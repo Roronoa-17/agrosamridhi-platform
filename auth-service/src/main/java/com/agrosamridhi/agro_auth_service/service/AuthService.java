@@ -57,8 +57,8 @@ public class AuthService {
 		
 		String token = jwtUtil.generateToken(saved.getFarmerId(), saved.getEmail());
 		
-		log.info("Farmer registerd successfully: id{},email{}",
-				saved.getFarmerId(),saved.getEmail());
+		log.info("Farmer registered successfully: id={}, email={}, token={}",
+				saved.getFarmerId(), saved.getEmail(), token);
 		
 		return buildResponse(saved,token);
 			
@@ -76,7 +76,7 @@ public class AuthService {
 		
 		String token=jwtUtil.generateToken(farmer.getFarmerId(), farmer.getEmail());
 		
-		log.info("Farmer logged in: id{}", farmer.getFarmerId());
+		log.info("Farmer logged in: id={}, token={}", farmer.getFarmerId(), token);
 		
 		return buildResponse(farmer,token);
 	}

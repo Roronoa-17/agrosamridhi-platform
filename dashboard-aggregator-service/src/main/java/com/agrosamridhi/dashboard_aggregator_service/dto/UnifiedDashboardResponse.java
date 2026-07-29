@@ -11,10 +11,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class UnifiedDashboardResponse implements Serializable {
 	
-    public UnifiedDashboardResponse(FarmerProfileDTO profile2, WeatherAdvisoryDTO weather2, MandiTrendDTO mandiTrends2,
-			long timeMillis) {
-
-	}
 	private FarmerProfileDTO profile;
     private WeatherAdvisoryDTO weather;
     private MandiTrendDTO mandiTrends;
