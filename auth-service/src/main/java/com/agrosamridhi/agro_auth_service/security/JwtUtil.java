@@ -55,6 +55,10 @@ public class JwtUtil {
 	}
 	
 	public Long extractFarmerId(String token) {
+		Object id = getClaims(token).get("farmerId");
+		if(id instanceof Number) {
+			return ((Number) id).longValue();
+		}
 		return getClaims(token).get("farmerId",Long.class);
 	}
 	

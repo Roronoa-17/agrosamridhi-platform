@@ -49,7 +49,7 @@ public class AuthController {
 	}
 	
 	@GetMapping("/profile")
-	@PreAuthorize("hasRole('FARMER')")
+	@PreAuthorize("hasAuthority('FARMER') or hasRole('FARMER')") 
 	public ResponseEntity<Farmer> getProfile(){
 		Authentication auth=SecurityContextHolder
 				.getContext()
