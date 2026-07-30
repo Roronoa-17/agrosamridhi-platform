@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.PathVariable;
 import com.agrosamridhi.agro_auth_service.dto.AuthResponse;
 import com.agrosamridhi.agro_auth_service.dto.LoginRequest;
 import com.agrosamridhi.agro_auth_service.dto.RegisterRequest;
@@ -57,5 +57,12 @@ public class AuthController {
 		
 		Long farmerId=(Long)auth.getCredentials();
 		return ResponseEntity.ok(authService.getProfile(farmerId));
+	}
+
+
+	@GetMapping("/profile/{id}")
+	public ResponseEntity getProfileById(@PathVariable Long id) {
+		// This reuses your existing AuthService logic to find the farmer by ID
+		return ResponseEntity.ok(authService.getProfile(id));
 	}
 }

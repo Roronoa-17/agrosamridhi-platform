@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 public class DashboardController {
 
     private final DashboardAggregatorService dashboardService;
-    
+
     @GetMapping("/{farmerId}")
-    public ResponseEntity<UnifiedDashboardResponse> getDashboard(@PathVariable String farmerId) {
+    public ResponseEntity getDashboard(@PathVariable String farmerId) {
         return ResponseEntity.ok(dashboardService.getAggregatedDashboard(farmerId));
     }
 }

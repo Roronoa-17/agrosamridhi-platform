@@ -11,14 +11,13 @@ spring:
       timeout: 2000ms
   cache:
     type: redis
-  # OpenFeign Configuration MUST be nested under 'spring:'
   cloud:
     openfeign:
       client:
         config:
           default:
-            connectTimeout: 100
-            readTimeout: 300 
+            connectTimeout: 5000
+            readTimeout: 5000
 
 # Eureka Discovery Server Configuration
 eureka:
