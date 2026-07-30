@@ -32,6 +32,7 @@ public class RegisterRequest {
 	String district;
 	BigDecimal landSizeAcres;
 	Long annualIncome;
+	String primaryCrop;
 	Farmer.CasteCategory casteCategory;
 	Farmer.Language preferredLanguage;
 }

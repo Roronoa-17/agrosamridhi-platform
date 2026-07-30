@@ -33,6 +33,13 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
+        // CORS preflight requests never carry the Authorization header - let them
+        // through so the browser's actual request isn't blocked as a CORS failure.
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String path = request.getRequestURI();
 
         // 1. If it's a public route, let it pass immediately

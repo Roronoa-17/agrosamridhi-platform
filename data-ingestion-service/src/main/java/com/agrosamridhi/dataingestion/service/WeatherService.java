@@ -7,7 +7,11 @@ public interface WeatherService {
 
     void fetchAndSaveWeatherData();
 
+    void fetchAndSaveWeatherData(String district);
+
     List<WeatherData> getAllWeatherData();
 
     String generateWeatherAdvisory(String district);
+
+    WeatherData getLatestWeather(String district);
 }

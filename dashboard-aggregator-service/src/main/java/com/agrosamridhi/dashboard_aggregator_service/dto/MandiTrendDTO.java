@@ -4,6 +4,8 @@ import lombok.Data;
 @Data
 public class MandiTrendDTO {
     private String cropName;
-    private Double currentPrice;
-    private String trend; // e.g., "UP", "DOWN"
+    private Double averagePrice;
+    private Double minimumPrice;
+    private Double maximumPrice;
+    private Long totalRecords;
 }

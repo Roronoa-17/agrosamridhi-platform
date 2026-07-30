@@ -10,7 +10,11 @@ public class FarmerProfileDTO {
     private String primaryCrop;
     private String location; 
     
-    // Manual getter just in case Lombok acts up again
-    public String getLocation() { return location != null ? location : state; }
+    // Weather is keyed by district, not state - prefer district, then explicit location, then state.
+    public String getLocation() {
+        if (district != null) return district;
+        if (location != null) return location;
+        return state;
+    }
     public String getPrimaryCrop() { return primaryCrop; }
 }

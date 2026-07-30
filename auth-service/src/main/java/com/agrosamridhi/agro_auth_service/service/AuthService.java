@@ -54,6 +54,7 @@ Farmer.CasteCategory casteCategory = req.getCasteCategory();
 				.district(req.getDistrict())
 				.landSizeAcres(req.getLandSizeAcres())
 				.annualIncome(req.getAnnualIncome())
+				.primaryCrop(req.getPrimaryCrop())
 				.casteCategory(casteCategory)
 				.preferredLanguage(req.getPreferredLanguage()!=null
 							?req.getPreferredLanguage()

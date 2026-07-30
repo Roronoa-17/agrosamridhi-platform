@@ -52,8 +52,11 @@ public class Farmer {
 	
 	@Column(precision=10,scale=3)
 	private BigDecimal landSizeAcres;
-	
+
 	private Long annualIncome;
+
+	@Column(length=100)
+	private String primaryCrop;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(length=10)
