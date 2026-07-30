@@ -37,6 +37,14 @@ public class AuthService {
 					HttpStatus.CONFLICT,
 					"Phone number already Registered");
 			
+Farmer.CasteCategory casteCategory = req.getCasteCategory();
+		if (casteCategory == null) {
+			casteCategory = Farmer.CasteCategory.GEN;
+		}
+		if ("GENERAL".equalsIgnoreCase(String.valueOf(req.getCasteCategory()))) {
+			casteCategory = Farmer.CasteCategory.GENERAL;
+		}
+
 		Farmer farmer=Farmer.builder()
 				.name(req.getName())
 				.email(req.getEmail())
@@ -46,7 +54,7 @@ public class AuthService {
 				.district(req.getDistrict())
 				.landSizeAcres(req.getLandSizeAcres())
 				.annualIncome(req.getAnnualIncome())
-				.casteCategory(req.getCasteCategory())
+				.casteCategory(casteCategory)
 				.preferredLanguage(req.getPreferredLanguage()!=null
 							?req.getPreferredLanguage()
 							:Farmer.Language.EN
@@ -57,8 +65,8 @@ public class AuthService {
 		
 		String token = jwtUtil.generateToken(saved.getFarmerId(), saved.getEmail());
 		
-		log.info("Farmer registerd successfully: id{},email{}",
-				saved.getFarmerId(),saved.getEmail());
+		log.info("Farmer registered successfully: id={}, email={}, token={}",
+				saved.getFarmerId(), saved.getEmail(), token);
 		
 		return buildResponse(saved,token);
 			
@@ -76,7 +84,7 @@ public class AuthService {
 		
 		String token=jwtUtil.generateToken(farmer.getFarmerId(), farmer.getEmail());
 		
-		log.info("Farmer logged in: id{}", farmer.getFarmerId());
+		log.info("Farmer logged in: id={}, token={}", farmer.getFarmerId(), token);
 		
 		return buildResponse(farmer,token);
 	}

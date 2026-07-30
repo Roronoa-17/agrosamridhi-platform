@@ -70,6 +70,12 @@ public class Farmer {
 	@Column(updatable=false)
 	private LocalDateTime createAt;
 	
-	public enum CasteCategory{GEN,OBC,SC,ST}
+	public enum CasteCategory{
+		GEN,
+		OBC,
+		SC,
+		ST,
+		GENERAL
+	}
 	public enum Language{EN,HI,MR}
 }
