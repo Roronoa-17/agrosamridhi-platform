@@ -19,4 +19,12 @@ public interface MandiRepository extends JpaRepository<MandiPrice, Long> {
             String mandiName,
             LocalDate arrivalDate
     );
+
+    List<MandiPrice> findByDistrictIgnoreCase(String district);
+
+    List<MandiPrice> findByStateIgnoreCase(String state);
+
+    List<MandiPrice> findByCropNameContainingIgnoreCaseAndDistrictIgnoreCase(String cropName, String district);
+
+    List<MandiPrice> findByCropNameContainingIgnoreCaseAndStateIgnoreCase(String cropName, String state);
 }

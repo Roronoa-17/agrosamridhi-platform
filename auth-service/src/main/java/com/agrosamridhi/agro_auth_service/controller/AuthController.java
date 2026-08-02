@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.agrosamridhi.agro_auth_service.dto.AuthResponse;
 import com.agrosamridhi.agro_auth_service.dto.LoginRequest;
 import com.agrosamridhi.agro_auth_service.dto.RegisterRequest;
+import com.agrosamridhi.agro_auth_service.dto.UpdateProfileRequest;
 import com.agrosamridhi.agro_auth_service.entity.Farmer;
 import com.agrosamridhi.agro_auth_service.service.AuthService;
 
@@ -57,6 +59,18 @@ public class AuthController {
 		
 		Long farmerId=(Long)auth.getCredentials();
 		return ResponseEntity.ok(authService.getProfile(farmerId));
+	}
+
+	@PutMapping("/profile")
+	@PreAuthorize("hasAuthority('FARMER') or hasRole('FARMER')")
+	public ResponseEntity<Farmer> updateProfile(
+			@Valid @RequestBody UpdateProfileRequest req){
+		Authentication auth=SecurityContextHolder
+				.getContext()
+				.getAuthentication();
+
+		Long farmerId=(Long)auth.getCredentials();
+		return ResponseEntity.ok(authService.updateProfile(farmerId, req));
 	}
 
 

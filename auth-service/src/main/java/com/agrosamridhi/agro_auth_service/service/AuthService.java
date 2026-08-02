@@ -8,6 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.agrosamridhi.agro_auth_service.dto.AuthResponse;
 import com.agrosamridhi.agro_auth_service.dto.LoginRequest;
 import com.agrosamridhi.agro_auth_service.dto.RegisterRequest;
+import com.agrosamridhi.agro_auth_service.dto.UpdateProfileRequest;
 import com.agrosamridhi.agro_auth_service.entity.Farmer;
 import com.agrosamridhi.agro_auth_service.repository.FarmerRepository;
 import com.agrosamridhi.agro_auth_service.security.JwtUtil;
@@ -95,7 +96,38 @@ Farmer.CasteCategory casteCategory = req.getCasteCategory();
 				.orElseThrow(()->new ResponseStatusException(
 						HttpStatus.NOT_FOUND,"Farmer not found"));
 	}
-	
+
+	@Transactional
+	public Farmer updateProfile(Long farmerId, UpdateProfileRequest req) {
+		Farmer farmer = farmerRepository.findById(farmerId)
+				.orElseThrow(()->new ResponseStatusException(
+						HttpStatus.NOT_FOUND,"Farmer not found"));
+
+		if (req.getPhone() != null && !req.getPhone().equals(farmer.getPhone())
+				&& farmerRepository.existsByPhone(req.getPhone())) {
+			throw new ResponseStatusException(
+					HttpStatus.CONFLICT, "Phone number already registered");
+		}
+
+		farmer.setName(req.getName());
+		farmer.setPhone(req.getPhone());
+		farmer.setState(req.getState());
+		farmer.setDistrict(req.getDistrict());
+		farmer.setLandSizeAcres(req.getLandSizeAcres());
+		farmer.setAnnualIncome(req.getAnnualIncome());
+		farmer.setPrimaryCrop(req.getPrimaryCrop());
+		if (req.getCasteCategory() != null) {
+			farmer.setCasteCategory(req.getCasteCategory());
+		}
+		if (req.getPreferredLanguage() != null) {
+			farmer.setPreferredLanguage(req.getPreferredLanguage());
+		}
+
+		Farmer saved = farmerRepository.save(farmer);
+		log.info("Farmer profile updated: id={}", saved.getFarmerId());
+		return saved;
+	}
+
 	private AuthResponse buildResponse(Farmer f,String token) {
 		return AuthResponse.builder()
 				.token(token)

@@ -1,5 +1,9 @@
 package com.agrosamridhi.dataingestion.dto;
 
+import com.agrosamridhi.dataingestion.entity.MandiPrice;
+
+import java.util.List;
+
 public class MandiTrendResponse {
 
     private String cropName;
@@ -7,6 +11,8 @@ public class MandiTrendResponse {
     private Double minimumPrice;
     private Double maximumPrice;
     private Long totalRecords;
+    private String locationScope;
+    private List<MandiPrice> records;
 
     public MandiTrendResponse() {
     }
@@ -61,5 +67,21 @@ public class MandiTrendResponse {
 
     public void setTotalRecords(Long totalRecords) {
         this.totalRecords = totalRecords;
+    }
+
+    public String getLocationScope() {
+        return locationScope;
+    }
+
+    public void setLocationScope(String locationScope) {
+        this.locationScope = locationScope;
+    }
+
+    public List<MandiPrice> getRecords() {
+        return records;
+    }
+
+    public void setRecords(List<MandiPrice> records) {
+        this.records = records;
     }
 }

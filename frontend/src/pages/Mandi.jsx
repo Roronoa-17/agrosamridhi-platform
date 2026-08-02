@@ -9,17 +9,25 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { LineChart as LineChartIcon, Search, RefreshCcw, Wheat } from "lucide-react";
+import { LineChart as LineChartIcon, Search, RefreshCcw, Wheat, MapPin } from "lucide-react";
 import PageHeader from "../components/ui/PageHeader";
 import Spinner, { PageSpinner } from "../components/ui/Spinner";
 import EmptyState from "../components/ui/EmptyState";
 import StatCard from "../components/ui/StatCard";
 import { getAllMandiPrices, fetchMandiPrices, getMandiTrend } from "../api/mandi";
 import { extractErrorMessage } from "../api/client";
+import { useAuth } from "../context/AuthContext";
 
 const BRAND_600 = "#35762a";
 const MUTED = "#898781";
 const GRIDLINE = "#e1e0d9";
+
+const scopeLabels = {
+  district: "district",
+  state: "state",
+  nationwide: "nationwide",
+  live: "freshly fetched",
+};
 
 function ChartTooltip({ active, payload, label }) {
   if (!active || !payload?.length) return null;
@@ -34,6 +42,10 @@ function ChartTooltip({ active, payload, label }) {
 }
 
 export default function Mandi() {
+  const { user } = useAuth();
+  const location = { state: user?.state, district: user?.district };
+  const hasLocation = Boolean(location.state || location.district);
+
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
@@ -44,7 +56,7 @@ export default function Mandi() {
 
   const loadRecords = () => {
     setLoading(true);
-    getAllMandiPrices()
+    getAllMandiPrices(location)
       .then(setRecords)
       .catch((err) => toast.error(extractErrorMessage(err, "Could not load mandi prices")))
       .finally(() => setLoading(false));
@@ -52,7 +64,8 @@ export default function Mandi() {
 
   useEffect(() => {
     loadRecords();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.state, location.district]);
 
   const handleSync = async () => {
     setSyncing(true);
@@ -73,14 +86,25 @@ export default function Mandi() {
     setTrendLoading(true);
     setTrend(null);
     try {
-      const result = await getMandiTrend(cropName.trim());
+      const result = await getMandiTrend(cropName.trim(), location);
       setTrend(result);
+      if (!result?.totalRecords) {
+        toast.error(`No current mandi price data found for "${cropName.trim()}"`);
+      }
     } catch (err) {
       toast.error(extractErrorMessage(err, "Could not fetch trend for this crop"));
     } finally {
       setTrendLoading(false);
     }
   };
+
+  const trendChartData = useMemo(() => {
+    if (!trend?.records?.length) return [];
+    return trend.records.map((r) => ({
+      crop: `${r.mandiName} (${r.district})`,
+      price: r.modalPrice,
+    }));
+  }, [trend]);
 
   const chartData = useMemo(() => {
     const byCrop = new Map();
@@ -95,6 +119,10 @@ export default function Mandi() {
       .sort((a, b) => b.price - a.price)
       .slice(0, 10);
   }, [records]);
+
+  const nearbyLabel = hasLocation
+    ? [location.district, location.state].filter(Boolean).join(", ")
+    : null;
 
   return (
     <div>
@@ -127,13 +155,62 @@ export default function Mandi() {
           </button>
         </form>
 
-        {trend && (
-          <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <StatCard label="Crop" value={trend.cropName} tone="brand" icon={Wheat} />
-            <StatCard label="Average Price" value={`₹${trend.averagePrice ?? "—"}`} tone="sky" />
-            <StatCard label="Min / Max" value={`₹${trend.minimumPrice ?? "—"} / ₹${trend.maximumPrice ?? "—"}`} tone="earth" />
-            <StatCard label="Records" value={trend.totalRecords ?? 0} tone="amber" />
-          </div>
+        {trend && trend.totalRecords > 0 && (
+          <>
+            <p className="mt-4 text-xs font-medium text-brand-700">
+              Showing {scopeLabels[trend.locationScope] ?? "matching"} results for "{trend.cropName}"
+              {trend.locationScope === "live" && " — just fetched from the live market feed"}
+            </p>
+            <div className="mt-2 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <StatCard label="Crop" value={trend.cropName} tone="brand" icon={Wheat} />
+              <StatCard label="Average Price" value={`₹${Math.round(trend.averagePrice) ?? "—"}`} tone="sky" />
+              <StatCard label="Min / Max" value={`₹${trend.minimumPrice ?? "—"} / ₹${trend.maximumPrice ?? "—"}`} tone="earth" />
+              <StatCard label="Records" value={trend.totalRecords ?? 0} tone="amber" />
+            </div>
+
+            <div className="mt-5 h-64 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={trendChartData} margin={{ top: 4, right: 8, left: -12, bottom: 4 }}>
+                  <CartesianGrid vertical={false} stroke={GRIDLINE} />
+                  <XAxis
+                    dataKey="crop"
+                    tick={{ fontSize: 11, fill: MUTED }}
+                    axisLine={{ stroke: GRIDLINE }}
+                    tickLine={false}
+                    interval={0}
+                    angle={-20}
+                    textAnchor="end"
+                    height={60}
+                  />
+                  <YAxis tick={{ fontSize: 12, fill: MUTED }} axisLine={false} tickLine={false} width={48} />
+                  <Tooltip cursor={{ fill: "rgba(53,118,42,0.06)" }} content={<ChartTooltip />} />
+                  <Bar dataKey="price" fill={BRAND_600} radius={[4, 4, 0, 0]} maxBarSize={28} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </>
+        )}
+
+        {trend && trend.totalRecords === 0 && (
+          <p className="mt-4 text-sm text-slate-500">
+            No current mandi price data found for "{trend.cropName}". Prices depend on daily market
+            arrivals, so this crop may not be trading right now.
+          </p>
+        )}
+      </div>
+
+      <div className="mb-4 flex items-center gap-2 text-sm text-slate-500">
+        <MapPin size={15} className="text-brand-600" />
+        {nearbyLabel ? (
+          <span>Showing mandi prices near <span className="font-medium text-slate-700">{nearbyLabel}</span></span>
+        ) : (
+          <span>
+            Add your state/district in your{" "}
+            <a href="/profile" className="font-medium text-brand-700 hover:underline">
+              profile
+            </a>{" "}
+            to see mandi prices near you. Showing nationwide prices for now.
+          </span>
         )}
       </div>
 
@@ -156,7 +233,7 @@ export default function Mandi() {
         <>
           <div className="card mb-6 p-6">
             <h3 className="mb-4 text-sm font-semibold text-slate-700">
-              Latest modal price by crop (top 10)
+              Latest modal price by crop (top 10{nearbyLabel ? " near you" : ""})
             </h3>
             <div className="h-72 w-full">
               <ResponsiveContainer width="100%" height="100%">

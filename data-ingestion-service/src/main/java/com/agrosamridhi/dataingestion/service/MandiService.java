@@ -9,7 +9,7 @@ public interface MandiService {
 
     void fetchAndSaveMandiPrices();
 
-    List<MandiPrice> getAllMandiPrices();
+    List<MandiPrice> getAllMandiPrices(String state, String district);
 
-    MandiTrendResponse getPriceTrend(String cropName);
+    MandiTrendResponse getPriceTrend(String cropName, String state, String district);
 }

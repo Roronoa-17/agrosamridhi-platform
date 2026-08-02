@@ -1,6 +1,5 @@
 package com.agrosamridhi.dataingestion.service.impl;
 
-import java.util.Optional;
 import com.agrosamridhi.dataingestion.dto.AgmarknetRecord;
 import com.agrosamridhi.dataingestion.dto.AgmarknetResponse;
 import com.agrosamridhi.dataingestion.dto.MandiTrendResponse;
@@ -11,13 +10,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
 public class MandiServiceImpl implements MandiService {
+
+    private static final DateTimeFormatter ARRIVAL_DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final int RECORDS_PER_TREND = 20;
 
     private final MandiRepository mandiRepository;
     private final WebClient.Builder webClientBuilder;
@@ -35,40 +40,63 @@ public class MandiServiceImpl implements MandiService {
     }
 
     @Override
-public void fetchAndSaveMandiPrices() {
+    public void fetchAndSaveMandiPrices() {
+        AgmarknetResponse response = webClientBuilder.build()
+                .get()
+                .uri(agmarknetBaseUrl +
+                        "?api-key=" + apiKey +
+                        "&format=json" +
+                        "&limit=100")
+                .retrieve()
+                .bodyToMono(AgmarknetResponse.class)
+                .block();
 
-    AgmarknetResponse response = webClientBuilder.build()
-            .get()
-            .uri(agmarknetBaseUrl +
-                    "?api-key=" + apiKey +
-                    "&format=json" +
-                    "&limit=100")
-            .retrieve()
-            .bodyToMono(AgmarknetResponse.class)
-            .block();
+        int inserted = saveAgmarknetRecords(response);
+        System.out.println("Inserted: " + inserted);
+    }
 
-    if (response != null && response.getRecords() != null) {
+    private List<MandiPrice> fetchFreshByCommodity(String cropName) {
+        String encodedCrop = URLEncoder.encode(cropName, StandardCharsets.UTF_8);
 
-        DateTimeFormatter formatter =
-                DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        AgmarknetResponse response = webClientBuilder.build()
+                .get()
+                .uri(agmarknetBaseUrl +
+                        "?api-key=" + apiKey +
+                        "&format=json" +
+                        "&limit=50" +
+                        "&filters%5BCommodity%5D=" + encodedCrop)
+                .retrieve()
+                .bodyToMono(AgmarknetResponse.class)
+                .block();
+
+        saveAgmarknetRecords(response);
+
+        return mandiRepository.findByCropNameContainingIgnoreCase(cropName);
+    }
+
+    private int saveAgmarknetRecords(AgmarknetResponse response) {
+        if (response == null || response.getRecords() == null) {
+            return 0;
+        }
 
         int inserted = 0;
-        int skipped = 0;
 
         for (AgmarknetRecord record : response.getRecords()) {
+            LocalDate arrivalDate;
+            try {
+                arrivalDate = LocalDate.parse(record.getArrivalDate(), ARRIVAL_DATE_FORMAT);
+            } catch (Exception ex) {
+                continue;
+            }
 
-            LocalDate arrivalDate =
-                    LocalDate.parse(record.getArrivalDate(), formatter);
+            List<MandiPrice> existingRecords =
+                    mandiRepository.findByCropNameAndMandiNameAndArrivalDate(
+                            record.getCommodity(),
+                            record.getMarket(),
+                            arrivalDate
+                    );
 
-           List<MandiPrice> existingRecords =
-        mandiRepository.findByCropNameAndMandiNameAndArrivalDate(
-                record.getCommodity(),
-                record.getMarket(),
-                arrivalDate
-        );
-
-if (existingRecords.isEmpty()) {
-
+            if (existingRecords.isEmpty()) {
                 MandiPrice mandiPrice = new MandiPrice();
 
                 mandiPrice.setCropName(record.getCommodity());
@@ -85,30 +113,75 @@ if (existingRecords.isEmpty()) {
 
                 mandiRepository.save(mandiPrice);
                 inserted++;
-
-            } else {
-
-                skipped++;
-
             }
         }
 
-        System.out.println("Inserted: " + inserted +
-                " | Skipped duplicates: " + skipped);
+        return inserted;
     }
-}
 
     @Override
-    public List<MandiPrice> getAllMandiPrices() {
+    public List<MandiPrice> getAllMandiPrices(String state, String district) {
+        if (district != null && !district.isBlank()) {
+            List<MandiPrice> local = mandiRepository.findByDistrictIgnoreCase(district.trim());
+            if (!local.isEmpty()) {
+                return local;
+            }
+        }
+
+        if (state != null && !state.isBlank()) {
+            List<MandiPrice> local = mandiRepository.findByStateIgnoreCase(state.trim());
+            if (!local.isEmpty()) {
+                return local;
+            }
+        }
+
         return mandiRepository.findAll();
     }
 
     @Override
-    public MandiTrendResponse getPriceTrend(String cropName) {
-        List<MandiPrice> records = mandiRepository.findByCropNameContainingIgnoreCase(cropName);
+    public MandiTrendResponse getPriceTrend(String cropName, String state, String district) {
+        List<MandiPrice> records = List.of();
+        String scope = "none";
+
+        if (district != null && !district.isBlank()) {
+            records = mandiRepository.findByCropNameContainingIgnoreCaseAndDistrictIgnoreCase(cropName, district.trim());
+            if (!records.isEmpty()) {
+                scope = "district";
+            }
+        }
+
+        if (records.isEmpty() && state != null && !state.isBlank()) {
+            records = mandiRepository.findByCropNameContainingIgnoreCaseAndStateIgnoreCase(cropName, state.trim());
+            if (!records.isEmpty()) {
+                scope = "state";
+            }
+        }
 
         if (records.isEmpty()) {
-            return null;
+            records = mandiRepository.findByCropNameContainingIgnoreCase(cropName);
+            if (!records.isEmpty()) {
+                scope = "nationwide";
+            }
+        }
+
+        if (records.isEmpty()) {
+            records = fetchFreshByCommodity(cropName);
+            if (!records.isEmpty()) {
+                scope = "live";
+            }
+        }
+
+        MandiTrendResponse response = new MandiTrendResponse();
+        response.setCropName(cropName);
+        response.setLocationScope(scope);
+
+        if (records.isEmpty()) {
+            response.setAveragePrice(null);
+            response.setMinimumPrice(null);
+            response.setMaximumPrice(null);
+            response.setTotalRecords(0L);
+            response.setRecords(List.of());
+            return response;
         }
 
         double averagePrice = records.stream()
@@ -126,12 +199,14 @@ if (existingRecords.isEmpty()) {
                 .max()
                 .orElse(0.0);
 
-        MandiTrendResponse response = new MandiTrendResponse();
-        response.setCropName(cropName);
         response.setAveragePrice(averagePrice);
         response.setMinimumPrice(minimumPrice);
         response.setMaximumPrice(maximumPrice);
         response.setTotalRecords((long) records.size());
+        response.setRecords(records.stream()
+                .sorted(Comparator.comparing(MandiPrice::getArrivalDate).reversed())
+                .limit(RECORDS_PER_TREND)
+                .toList());
 
         return response;
     }

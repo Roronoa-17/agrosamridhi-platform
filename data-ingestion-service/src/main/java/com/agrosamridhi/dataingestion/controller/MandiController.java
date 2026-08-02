@@ -17,8 +17,10 @@ public class MandiController {
     private MandiService mandiService;
 
     @GetMapping("/all")
-    public List<MandiPrice> getAllMandiPrices() {
-        return mandiService.getAllMandiPrices();
+    public List<MandiPrice> getAllMandiPrices(
+            @RequestParam(value = "state", required = false) String state,
+            @RequestParam(value = "district", required = false) String district) {
+        return mandiService.getAllMandiPrices(state, district);
     }
 
     @PostMapping("/fetch")
@@ -29,7 +31,10 @@ public String fetchMandiPrices() {
 
 
 @GetMapping("/trends")
-public MandiTrendResponse getPriceTrend(@RequestParam("cropName") String cropName) {
-    return mandiService.getPriceTrend(cropName);
+public MandiTrendResponse getPriceTrend(
+        @RequestParam("cropName") String cropName,
+        @RequestParam(value = "state", required = false) String state,
+        @RequestParam(value = "district", required = false) String district) {
+    return mandiService.getPriceTrend(cropName, state, district);
 }
 }
