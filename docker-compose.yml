@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # 1. Global MySQL Database
   agrosamridhi-db:
@@ -9,7 +7,7 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-rootpassword}
       MYSQL_DATABASE: agrosamridhi_db
     volumes:
       - db_data:/var/lib/mysql
@@ -26,6 +24,136 @@ services:
     restart: always
     ports:
       - "6379:6379"
+
+  # 3. Eureka Service Discovery
+  discovery-server:
+    build:
+      context: .
+      dockerfile: discovery-server/Dockerfile
+    container_name: discovery-server
+    restart: always
+    ports:
+      - "8761:8761"
+    environment:
+      EUREKA_HOSTNAME: discovery-server
+
+  # 4. Auth Service
+  auth-service:
+    build:
+      context: ./auth-service
+    container_name: auth-service
+    restart: always
+    ports:
+      - "8081:8081"
+    depends_on:
+      agrosamridhi-db:
+        condition: service_healthy
+      discovery-server:
+        condition: service_started
+    environment:
+      DB_HOST: agrosamridhi-db
+      DB_PORT: 3306
+      DB_USERNAME: root
+      DB_PASSWORD: ${DB_PASSWORD:-rootpassword}
+      EUREKA_URI: http://discovery-server:8761/eureka/
+      JWT_SECRET: ${JWT_SECRET:-agro_auth_super_secret_key_minimum_256_bits_long_abc123xyz456}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000}
+
+  # 5. Data Ingestion Service (weather + mandi price data)
+  data-ingestion-service:
+    build:
+      context: .
+      dockerfile: data-ingestion-service/Dockerfile
+    container_name: data-ingestion-service
+    restart: always
+    ports:
+      - "8083:8083"
+    depends_on:
+      agrosamridhi-db:
+        condition: service_healthy
+      discovery-server:
+        condition: service_started
+    environment:
+      DB_HOST: agrosamridhi-db
+      DB_PORT: 3306
+      DB_USERNAME: root
+      DB_PASSWORD: ${DB_PASSWORD:-rootpassword}
+      EUREKA_URI: http://discovery-server:8761/eureka/
+
+  # 6. AI Inference Service (Gemini-backed)
+  ai-inference-service:
+    build:
+      context: ./ai-inference-service
+    container_name: ai-inference-service
+    restart: always
+    ports:
+      - "8084:8084"
+    depends_on:
+      discovery-server:
+        condition: service_started
+    environment:
+      EUREKA_URI: http://discovery-server:8761/eureka/
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+
+  # 7. Dashboard Aggregator Service
+  dashboard-aggregator-service:
+    build:
+      context: ./dashboard-aggregator-service
+    container_name: dashboard-aggregator-service
+    restart: always
+    ports:
+      - "8090:8090"
+    depends_on:
+      discovery-server:
+        condition: service_started
+      agrosamridhi-cache:
+        condition: service_started
+    environment:
+      REDIS_HOST: agrosamridhi-cache
+      REDIS_PORT: 6379
+      EUREKA_URI: http://discovery-server:8761/eureka/
+
+  # 8. API Gateway
+  api-gateway:
+    build:
+      context: .
+      dockerfile: api-gateway/Dockerfile
+    container_name: api-gateway
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      discovery-server:
+        condition: service_started
+      auth-service:
+        condition: service_started
+      data-ingestion-service:
+        condition: service_started
+      ai-inference-service:
+        condition: service_started
+      dashboard-aggregator-service:
+        condition: service_started
+    environment:
+      EUREKA_URI: http://discovery-server:8761/eureka/
+      AUTH_SERVICE_URI: http://auth-service:8081
+      DATA_INGESTION_SERVICE_URI: http://data-ingestion-service:8083
+      AI_INFERENCE_SERVICE_URI: http://ai-inference-service:8084
+      DASHBOARD_AGGREGATOR_SERVICE_URI: http://dashboard-aggregator-service:8090
+      JWT_SECRET: ${JWT_SECRET:-agro_auth_super_secret_key_minimum_256_bits_long_abc123xyz456}
+
+  # 9. Frontend (React/Vite, served via nginx)
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8080}
+    container_name: frontend
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      api-gateway:
+        condition: service_started
 
 volumes:
   # Persists database data even if the container is destroyed
