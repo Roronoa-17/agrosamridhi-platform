@@ -16,7 +16,10 @@ COPY data-ingestion-service/src data-ingestion-service/src
 RUN mvn -pl data-ingestion-service -am clean package -DskipTests
 
 FROM eclipse-temurin:21-jre-alpine
+RUN addgroup -S app && adduser -S app -G app
 WORKDIR /app
 COPY --from=build /app/data-ingestion-service/target/data-ingestion-service-1.0.0-SNAPSHOT.jar app.jar
+RUN chown -R app:app /app
+USER app
 EXPOSE 8083
 ENTRYPOINT ["java", "-jar", "app.jar"]

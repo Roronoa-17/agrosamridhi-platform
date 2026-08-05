@@ -4,10 +4,12 @@ import com.agrosamridhi.dashboard_aggregator_service.config.FeignClientIntercept
 import com.agrosamridhi.dashboard_aggregator_service.dto.FarmerProfileDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
+// FeignClientInterceptor forwards the caller's own Authorization header, so
+// auth-service derives the farmer's identity from that JWT - no id parameter
+// needed, and no way to request someone else's profile.
 @FeignClient(name = "agro-auth-service", configuration = FeignClientInterceptor.class)
 public interface AuthServiceClient {
-    @GetMapping("/api/auth/profile/{id}")
-    FarmerProfileDTO getProfile(@PathVariable("id") String id);
+    @GetMapping("/api/auth/profile")
+    FarmerProfileDTO getProfile();
 }

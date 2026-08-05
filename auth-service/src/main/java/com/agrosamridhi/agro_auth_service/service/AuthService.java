@@ -67,8 +67,8 @@ Farmer.CasteCategory casteCategory = req.getCasteCategory();
 		
 		String token = jwtUtil.generateToken(saved.getFarmerId(), saved.getEmail());
 		
-		log.info("Farmer registered successfully: id={}, email={}, token={}",
-				saved.getFarmerId(), saved.getEmail(), token);
+		log.info("Farmer registered successfully: id={}, email={}",
+				saved.getFarmerId(), saved.getEmail());
 		
 		return buildResponse(saved,token);
 			
@@ -86,7 +86,7 @@ Farmer.CasteCategory casteCategory = req.getCasteCategory();
 		
 		String token=jwtUtil.generateToken(farmer.getFarmerId(), farmer.getEmail());
 		
-		log.info("Farmer logged in: id={}, token={}", farmer.getFarmerId(), token);
+		log.info("Farmer logged in: id={}", farmer.getFarmerId());
 		
 		return buildResponse(farmer,token);
 	}

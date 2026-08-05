@@ -10,7 +10,7 @@ import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtUtil {
-    @Value("${app.jwt.secret:agro_auth_super_secret_key_minimum_256_bits_long_abc123xyz456}")
+    @Value("${app.jwt.secret}")
     private String secret;
 
     public void validateToken(final String token) {

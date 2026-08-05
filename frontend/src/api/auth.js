@@ -12,10 +12,6 @@ export function getMyProfile() {
   return client.get("/api/auth/profile").then((res) => res.data);
 }
 
-export function getProfileById(id) {
-  return client.get(`/api/auth/profile/${id}`).then((res) => res.data);
-}
-
 export function updateProfile(payload) {
   return client.put("/api/auth/profile", payload).then((res) => res.data);
 }

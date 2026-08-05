@@ -5,6 +5,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,17 +16,19 @@ import java.io.IOException;
 import java.util.List;
 
 @Component
+@Slf4j
 public class AuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtUtil jwtUtil;
 
-    // Only allow the login/register endpoints and public scheme endpoints without a token.
+    // Exact-match only - every real endpoint under these services requires a
+    // valid JWT. There is no publicly-readable schemes endpoint: /api/schemes/match
+    // and /api/schemes/all both require auth (enforced again by auth-service's own
+    // @PreAuthorize, but the gateway must not wave them through first).
     private final List<String> openApiEndpoints = List.of(
             "/api/auth/login",
             "/api/auth/register",
-            "/api/schemes",
-            "/api/schemes/",
             "/actuator/health"
     );
 
@@ -42,17 +45,8 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
         String path = request.getRequestURI();
 
-        // 1. If it's a public route, let it pass immediately
-        // Using a standard for-loop guarantees absolutely zero type-inference errors!
-        boolean isPublic = false;
-        for (String endpoint : openApiEndpoints) {
-            if (path.contains(endpoint)) {
-                isPublic = true;
-                break;
-            }
-        }
-
-        if (isPublic) {
+        // 1. If it's an exact public route, let it pass immediately.
+        if (openApiEndpoints.contains(path)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -69,7 +63,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         try {
             jwtUtil.validateToken(token);
         } catch (Exception e) {
-            System.out.println("JWT VALIDATION FAILED: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+            log.warn("JWT validation failed: {} - {}", e.getClass().getSimpleName(), e.getMessage());
             response.sendError(HttpStatus.UNAUTHORIZED.value(), "Unauthorized Access - Invalid Token");
             return;
         }

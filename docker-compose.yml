@@ -4,8 +4,9 @@ services:
     image: mysql:8.0
     container_name: agrosamridhi-db
     restart: always
-    ports:
-      - "3306:3306"
+    # No host port published - only reachable from other containers on the
+    # compose network. Use `docker compose exec agrosamridhi-db mysql ...` for
+    # direct access instead of binding 3306/3307 on the host.
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-rootpassword}
       MYSQL_DATABASE: agrosamridhi_db
@@ -22,8 +23,7 @@ services:
     image: redis:7-alpine
     container_name: agrosamridhi-cache
     restart: always
-    ports:
-      - "6379:6379"
+    # No host port published - internal only.
 
   # 3. Eureka Service Discovery
   discovery-server:
@@ -32,8 +32,9 @@ services:
       dockerfile: discovery-server/Dockerfile
     container_name: discovery-server
     restart: always
-    ports:
-      - "8761:8761"
+    # No host port published - the Eureka dashboard is only reachable from
+    # inside the compose network (`docker compose exec` or a temporary port
+    # forward if you need to inspect it).
     environment:
       EUREKA_HOSTNAME: discovery-server
 
@@ -43,8 +44,7 @@ services:
       context: ./auth-service
     container_name: auth-service
     restart: always
-    ports:
-      - "8081:8081"
+    # No host port published - reached only via api-gateway.
     depends_on:
       agrosamridhi-db:
         condition: service_healthy
@@ -56,7 +56,10 @@ services:
       DB_USERNAME: root
       DB_PASSWORD: ${DB_PASSWORD:-rootpassword}
       EUREKA_URI: http://discovery-server:8761/eureka/
-      JWT_SECRET: ${JWT_SECRET:-agro_auth_super_secret_key_minimum_256_bits_long_abc123xyz456}
+      # Required - no default. JWT_SECRET must be set in .env or the
+      # container fails to start rather than silently signing tokens with a
+      # publicly-known secret.
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET must be set in .env}
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000}
 
   # 5. Data Ingestion Service (weather + mandi price data)
@@ -66,8 +69,7 @@ services:
       dockerfile: data-ingestion-service/Dockerfile
     container_name: data-ingestion-service
     restart: always
-    ports:
-      - "8083:8083"
+    # No host port published - reached only via api-gateway.
     depends_on:
       agrosamridhi-db:
         condition: service_healthy
@@ -79,6 +81,7 @@ services:
       DB_USERNAME: root
       DB_PASSWORD: ${DB_PASSWORD:-rootpassword}
       EUREKA_URI: http://discovery-server:8761/eureka/
+      AGMARKNET_API_KEY: ${AGMARKNET_API_KEY:-579b464db66ec23bdd0000012f6f17254eb24f0c4822fae0e3ab56ed}
 
   # 6. AI Inference Service (Gemini-backed)
   ai-inference-service:
@@ -86,8 +89,7 @@ services:
       context: ./ai-inference-service
     container_name: ai-inference-service
     restart: always
-    ports:
-      - "8084:8084"
+    # No host port published - reached only via api-gateway.
     depends_on:
       discovery-server:
         condition: service_started
@@ -101,8 +103,7 @@ services:
       context: ./dashboard-aggregator-service
     container_name: dashboard-aggregator-service
     restart: always
-    ports:
-      - "8090:8090"
+    # No host port published - reached only via api-gateway.
     depends_on:
       discovery-server:
         condition: service_started
@@ -112,6 +113,7 @@ services:
       REDIS_HOST: agrosamridhi-cache
       REDIS_PORT: 6379
       EUREKA_URI: http://discovery-server:8761/eureka/
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET must be set in .env}
 
   # 8. API Gateway
   api-gateway:
@@ -139,7 +141,8 @@ services:
       DATA_INGESTION_SERVICE_URI: http://data-ingestion-service:8083
       AI_INFERENCE_SERVICE_URI: http://ai-inference-service:8084
       DASHBOARD_AGGREGATOR_SERVICE_URI: http://dashboard-aggregator-service:8090
-      JWT_SECRET: ${JWT_SECRET:-agro_auth_super_secret_key_minimum_256_bits_long_abc123xyz456}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET must be set in .env}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000}
 
   # 9. Frontend (React/Vite, served via nginx)
   frontend:

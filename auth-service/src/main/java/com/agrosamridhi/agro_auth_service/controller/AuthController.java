@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PathVariable;
 import com.agrosamridhi.agro_auth_service.dto.AuthResponse;
 import com.agrosamridhi.agro_auth_service.dto.LoginRequest;
 import com.agrosamridhi.agro_auth_service.dto.RegisterRequest;
@@ -46,7 +45,7 @@ public class AuthController {
 			@RequestBody LoginRequest req){
 		log.info("Login request received: email={}", req.getEmail());
 		AuthResponse response = authService.login(req);
-		log.info("Login response body: {}", response);
+		log.info("Farmer logged in: id={}", response.getFarmerId());
 		return ResponseEntity.ok(response);
 	}
 	
@@ -71,12 +70,5 @@ public class AuthController {
 
 		Long farmerId=(Long)auth.getCredentials();
 		return ResponseEntity.ok(authService.updateProfile(farmerId, req));
-	}
-
-
-	@GetMapping("/profile/{id}")
-	public ResponseEntity getProfileById(@PathVariable Long id) {
-		// This reuses your existing AuthService logic to find the farmer by ID
-		return ResponseEntity.ok(authService.getProfile(id));
 	}
 }

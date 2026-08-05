@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 
-import { getDashboardSummary } from "../api/dashboard";
 import { fetchMandiPrices } from "../api/mandi";
 import { fetchWeather, getDistrictFallbackWeather } from "../api/weather";
 import { useAuth } from "../context/AuthContext";
@@ -150,7 +149,6 @@ export default function Dashboard() {
     Promise.allSettled([
       fetchWeather(userCity),
       fetchMandiPrices({ state: userState, commodity: userCrop }),
-      getDashboardSummary(),
     ]).then(([wRes, mRes]) => {
       if (wRes.status === "fulfilled" && wRes.value) {
         setWeatherData(wRes.value);

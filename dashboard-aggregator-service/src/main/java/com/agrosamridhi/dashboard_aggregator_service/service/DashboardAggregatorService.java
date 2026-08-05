@@ -19,11 +19,10 @@ public class DashboardAggregatorService {
     private final AuthServiceClient authServiceClient;
     private final DataIngestionClient dataIngestionClient;
 
-    public UnifiedDashboardResponse getAggregatedDashboard(String farmerId) {
-        log.info("Aggregating dashboard data for Farmer ID: {}", farmerId);
-
-        // 1. Fetch Auth Profile
-        FarmerProfileDTO profile = authServiceClient.getProfile(farmerId);
+    public UnifiedDashboardResponse getAggregatedDashboard() {
+        // 1. Fetch Auth Profile - identity comes from the forwarded JWT, not a parameter
+        FarmerProfileDTO profile = authServiceClient.getProfile();
+        log.info("Aggregating dashboard data for Farmer ID: {}", profile.getFarmerId());
 
         // 2. Each downstream call fails independently so one outage doesn't blank the whole card
         WeatherAdvisoryDTO weather = null;
