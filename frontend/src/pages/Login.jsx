@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Mail, Lock, Eye, EyeOff, LogIn } from "lucide-react";
 import toast from "react-hot-toast";
 import AuthLayout from "../components/layout/AuthLayout";
 import Spinner from "../components/ui/Spinner";
@@ -12,7 +11,6 @@ export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const [form, setForm] = useState({ email: "", password: "" });
-  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -24,7 +22,7 @@ export default function Login() {
     setLoading(true);
     try {
       await login(form.email, form.password);
-      toast.success("Welcome back!");
+      toast.success("Welcome back to AgroSamridhi!");
       const redirectTo = location.state?.from?.pathname || "/";
       navigate(redirectTo, { replace: true });
     } catch (error) {
@@ -35,67 +33,58 @@ export default function Login() {
   };
 
   return (
-    <AuthLayout title="Welcome back" subtitle="Log in to access your farmer dashboard">
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <AuthLayout>
+      <form onSubmit={handleSubmit} className="space-y-5 w-full">
         <div>
-          <label className="label" htmlFor="email">
-            Email address
+          <label className="text-xs font-bold text-slate-700 mb-1.5 block" htmlFor="email">
+            Email Address
           </label>
-          <div className="relative">
-            <Mail className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={17} />
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              autoComplete="email"
-              value={form.email}
-              onChange={handleChange}
-              placeholder="you@example.com"
-              className="input pl-10"
-            />
-          </div>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            autoComplete="email"
+            value={form.email}
+            onChange={handleChange}
+            placeholder="farmer@example.com"
+            className="w-full rounded-2xl bg-[#edf4fe] px-4 py-3 text-xs font-bold text-slate-900 outline-none border border-transparent focus:border-emerald-600 transition-all placeholder:text-slate-400"
+          />
         </div>
 
         <div>
-          <label className="label" htmlFor="password">
+          <label className="text-xs font-bold text-slate-700 mb-1.5 block" htmlFor="password">
             Password
           </label>
-          <div className="relative">
-            <Lock className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={17} />
-            <input
-              id="password"
-              name="password"
-              type={showPassword ? "text" : "password"}
-              required
-              autoComplete="current-password"
-              value={form.password}
-              onChange={handleChange}
-              placeholder="••••••••"
-              className="input pl-10 pr-10"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword((s) => !s)}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-            >
-              {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
-            </button>
-          </div>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            required
+            autoComplete="current-password"
+            value={form.password}
+            onChange={handleChange}
+            placeholder="••••••••"
+            className="w-full rounded-2xl bg-[#edf4fe] px-4 py-3 text-xs font-bold text-slate-900 outline-none border border-transparent focus:border-emerald-600 transition-all placeholder:text-slate-400"
+          />
         </div>
 
-        <button type="submit" disabled={loading} className="btn-primary w-full">
-          {loading ? <Spinner size={18} className="text-white" /> : <LogIn size={18} />}
-          Log in
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full rounded-2xl bg-[#066f44] hover:bg-[#045936] text-white py-3.5 text-xs font-black tracking-wide flex items-center justify-center gap-1.5 shadow-sm transition-colors cursor-pointer mt-2"
+        >
+          {loading ? <Spinner size={16} className="text-white" /> : null}
+          {loading ? "Signing in..." : "Secure Sign In →"}
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-slate-500">
-        New to AgroSamridhi?{" "}
-        <Link to="/register" className="font-medium text-brand-700 hover:underline">
-          Create an account
+      <div className="mt-8 text-center text-xs font-bold text-slate-500">
+        First time visiting the portal?{" "}
+        <Link to="/register" className="text-[#066f44] hover:underline font-extrabold ml-1">
+          Create Farmer Account
         </Link>
-      </p>
+      </div>
     </AuthLayout>
   );
 }

@@ -9,12 +9,10 @@ export default function AppShell() {
   return (
     <div className="flex min-h-screen bg-[#f6f8f4] md:flex-row">
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <div className="flex min-h-screen flex-1 flex-col">
+      <div className="flex min-h-screen flex-1 flex-col w-full overflow-x-hidden">
         <Topbar onMenuClick={() => setSidebarOpen(true)} />
-        <main className="flex-1 px-4 py-6 md:px-8 md:py-8">
-          <div className="mx-auto max-w-6xl">
-            <Outlet />
-          </div>
+        <main className="flex-1 p-4 md:p-6 lg:p-8 w-full">
+          <Outlet />
         </main>
       </div>
     </div>

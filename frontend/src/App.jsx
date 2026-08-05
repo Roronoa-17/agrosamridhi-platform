@@ -26,11 +26,11 @@ function App() {
             duration: 4000,
             style: {
               borderRadius: "12px",
-              background: "#1c3d1a",
+              background: "#0e4d2f",
               color: "#fff",
               fontSize: "14px",
             },
-            success: { iconTheme: { primary: "#6bb058", secondary: "#fff" } },
+            success: { iconTheme: { primary: "#4ade80", secondary: "#fff" } },
           }}
         />
         <Routes>
@@ -52,6 +52,7 @@ function App() {
             <Route path="/ai" element={<AiHub />} />
             <Route path="/ai/crop-suggestion" element={<CropSuggestion />} />
             <Route path="/ai/pest-diagnosis" element={<PestDiagnosis />} />
+            <Route path="/ai/soil-card" element={<SoilOcr />} />
             <Route path="/ai/soil-ocr" element={<SoilOcr />} />
           </Route>
 
