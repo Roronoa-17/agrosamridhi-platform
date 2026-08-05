@@ -15,3 +15,13 @@ target/
 ### Environment & Logs ###
 .env
 *.log
+
+
+#auth-service-ignore
+.project
+.classpath
+.settings/
+auth-service/.project
+auth-service/.classpath
+auth-service/.settings/
+auth-service/target/
