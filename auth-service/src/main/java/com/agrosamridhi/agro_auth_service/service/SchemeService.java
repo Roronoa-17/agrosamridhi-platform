@@ -101,7 +101,8 @@ public class SchemeService {
             return SchemeMatchResult.of(scheme, 100, List.of("No restrictions — open to all farmers"), List.of());
         }
 
-      
+
+        List<String> allowedStates = criteria.getAllowedStates();
         if (allowedStates != null && !allowedStates.isEmpty()) {
             String farmerState = farmer.getState() != null ? farmer.getState().trim() : "";
             boolean stateMatch = allowedStates.stream()
