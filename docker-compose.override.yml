@@ -1,0 +1,27 @@
+# LOCAL DEVELOPMENT ONLY. Plain `docker compose up` auto-merges this file
+# on top of docker-compose.yml, restoring JWT_SECRET/GEMINI_API_KEY from
+# .env for services that have no property-level default for them.
+#
+# The EC2 deploy flow (scripts/deploy.sh) must NOT pick this up - it runs
+# `docker compose -f docker-compose.yml up`, which bypasses the override
+# file. That matters: these secrets are fetched from AWS SSM Parameter
+# Store in-app under the "aws" profile there, and an empty env var here
+# would take precedence over (shadow) that SSM-sourced value if it ever
+# got merged in on EC2.
+#
+# DB_PASSWORD and AGMARKNET_API_KEY don't need an entry here - both
+# already have a matching property-level default (rootpassword / the
+# public data.gov.in fallback key) in their service's application.properties.
+services:
+  auth-service:
+    environment:
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET must be set in .env for local development}
+  api-gateway:
+    environment:
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET must be set in .env for local development}
+  dashboard-aggregator-service:
+    environment:
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET must be set in .env for local development}
+  ai-inference-service:
+    environment:
+      GEMINI_API_KEY: ${GEMINI_API_KEY:?GEMINI_API_KEY must be set in .env for local development}

@@ -16,6 +16,42 @@
     <name>data-ingestion-service</name>
     <description>Data Ingestion Service for AgroSamridhi</description>
 
+    <!-- Pinned like auth-service/api-gateway: the root pom's 4.1.0 line
+         doesn't have a compatible Spring Cloud AWS release yet. -->
+    <properties>
+        <spring-boot.version>3.2.5</spring-boot.version>
+        <spring-cloud.version>2023.0.1</spring-cloud.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Re-import explicitly (not just via the spring-boot.version
+                 property) so this overrides the root pom's inherited
+                 4.1.0 import rather than merging alongside it. -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.awspring.cloud</groupId>
+                <artifactId>spring-cloud-aws-dependencies</artifactId>
+                <version>3.1.1</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <!-- Standard Web Endpoints -->
         <dependency>
@@ -58,10 +94,21 @@
 
 
 <!-- Swagger / OpenAPI Documentation -->
+<!-- 2.5.0, not 3.0.0: springdoc 3.x targets Spring Boot 4.x (its
+     org.springframework.boot.webmvc.autoconfigure package doesn't exist
+     on 3.2.5) and duplicate-registers ErrorMvcAutoConfiguration beans
+     against the Boot 3.x autoconfigure jar if left on 3.0.0. -->
 <dependency>
     <groupId>org.springdoc</groupId>
     <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-    <version>3.0.0</version>
+    <version>2.5.0</version>
+</dependency>
+
+<!-- Fetches DB_PASSWORD and AGMARKNET_API_KEY from AWS SSM Parameter
+     Store at runtime under the "aws" profile instead of an env var / .env file. -->
+<dependency>
+    <groupId>io.awspring.cloud</groupId>
+    <artifactId>spring-cloud-aws-starter-parameter-store</artifactId>
 </dependency>
     </dependencies>
 
