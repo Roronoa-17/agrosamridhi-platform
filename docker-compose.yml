@@ -55,6 +55,7 @@ services:
       DB_PORT: 3306
       DB_USERNAME: root
       EUREKA_URI: http://discovery-server:8761/eureka/
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000}
       # DB_PASSWORD and JWT_SECRET are fetched from AWS SSM Parameter
       # Store at startup (see application-aws.properties) instead of
       # being passed in here - no .env required.
