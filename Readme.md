@@ -1,7 +1,7 @@
 # 🌾 AgroSamridhi Platform 
 
 **AgroSamridhi** is an AI-powered, microservices-based backend platform designed to give Indian farmers actionable insights regarding soil health, crop suggestions, disease diagnosis, weather alerts, and market prices.
-**Checkout** : http//13.204.101.15:3000/
+**Checkout** : http://13.204.101.15:3000/
 ---
 
 ## 🏗️ 1. Architecture & Tech Stack
