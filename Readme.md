@@ -1,7 +1,7 @@
-# 🌾 AgroSamridhi Platform — Master Project Document
+# 🌾 AgroSamridhi Platform 
 
 **AgroSamridhi** is an AI-powered, microservices-based backend platform designed to give Indian farmers actionable insights regarding soil health, crop suggestions, disease diagnosis, weather alerts, and market prices.
-
+**Checkout** : http//13.204.101.15:3000/
 ---
 
 ## 🏗️ 1. Architecture & Tech Stack
@@ -26,26 +26,26 @@
 
 ## 👥 2. Team Distribution & Microservices Allocation
 
-### 👑 Team Lead / DevOps (Global Infra & Orchestration)
+### 👑 Priyesh Gawali - Team Lead / DevOps (Global Infra & Orchestration)
 * **Assigned Modules:** Infrastructure Routing & Service Registry
 * **Folders:** `/discovery-server`, `/api-gateway`
 * **Tasks:** Set up Eureka Registry, configure API Gateway routing rules, write multi-stage Dockerfiles, build `docker-compose.yml`, and manage GitHub branch protections.
 
-### 👤 Member 1 (Security, Auth & Rule Engines)
+### 👤 Dipak Bhamare (Security, Auth & Rule Engines)
 * **Assigned Modules:** 
   * **Module 1** — Authentication & Farmer Profile
   * **Module 7** — Government Scheme Finder
 * **Folder:** `/auth-service` (Port: 8082)
 * **Tasks:** Implement Spring Security 6, JWT generation/validation, profile management, and the relational mapping engine for Government Scheme eligibility.
 
-### 👤 Member 2 (Data Ingestion & Pipelines)
+### 👤 Devanshu Bhoyar (Data Ingestion & Pipelines)
 * **Assigned Modules:** 
   * **Module 5** — Weather & Farm Advisory
   * **Module 6** — Mandi Price Intelligence
 * **Folder:** `/data-ingestion-service` (Port: 8083)
 * **Tasks:** Build `@Scheduled` cron jobs to fetch Agmarknet Mandi prices and Open-Meteo weather data. Write MySQL Stored Procedures to calculate 90-day price trends efficiently.
 
-### 👤 Member 3 (Reactive AI & Computer Vision)
+### 👤 Gaurav Khainaar (Reactive AI & Computer Vision)
 * **Assigned Modules:** 
   * **Module 2** — Soil Health Card OCR
   * **Module 3** — AI Crop Suggestion Engine
@@ -53,7 +53,7 @@
 * **Folder:** `/ai-inference-service` (Port: 8084)
 * **Tasks:** Use Spring WebFlux to handle multipart image uploads. Engineer strict JSON prompts for Gemini Vision for Soil OCR and Pest Diagnosis. Build the Crop Suggestion rule engine.
 
-### 👤 Member 4 (API Aggregation, Caching & Swagger)
+### 👤 Ashish Nishad (API Aggregation, Caching & Swagger)
 * **Assigned Modules:** 
   * **Module 8** — Unified Dashboard
 * **Folder:** `/dashboard-aggregator-service` (Port: 8085)
