@@ -5,7 +5,7 @@
 ---
 
 ## 🏗️ 1. Architecture & Tech Stack
-* **Framework:** Java 17, Spring Boot 3, Spring Cloud
+* **Framework:** Java , Spring Boot 3, Spring Cloud
 * **Database & Caching:** MySQL 8, Redis
 * **AI Integration:** Google Gemini Vision API (via Spring WebFlux)
 * **External APIs:** Agmarknet (data.gov.in) for Mandi Prices, Open-Meteo for Weather
